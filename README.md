@@ -380,3 +380,56 @@ kalau aman restart
 ```console
 sudo systemctl restart nginx
 ```
+
+# Securing Nginx
+
+## Langkah 1 - Install Certbot
+
+```console
+sudo snap install core; sudo snap refresh core
+```
+
+link certbot command
+
+```console
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+## Langkah 2 - Setting Firewall
+
+Cek firewall
+
+```console
+sudo ufw status
+```
+
+Tambah
+
+```console
+sudo ufw allow 'Nginx Full'
+sudo ufw delete allow 'Nginx HTTP'
+```
+
+Cek statusnya
+
+```console
+sudo ufw status
+```
+
+## Langkah 3 - Keluarin Sertifikat SSL
+
+```console
+sudo certbot --nginx -d example.com -d www.example.com
+```
+
+## Langkah 4 - Verifikasi
+
+```console
+sudo systemctl status snap.certbot.renew.service
+```
+
+dryrun
+
+```console
+sudo certbot renew --dry-run
+```
