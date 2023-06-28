@@ -344,3 +344,39 @@ server {
         }
 }
 ```
+
+site enable
+
+```console
+sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+```
+
+prevent memory bucket problem
+
+```console
+sudo nano /etc/nginx/nginx.conf
+```
+
+cari server_names_hash_bucket_size, uncomment
+
+```bash
+...
+http {
+    ...
+    server_names_hash_bucket_size 64;
+    ...
+}
+...
+```
+
+Cek syntax error di config nginx
+
+```console
+sudo nginx -t
+```
+
+kalau aman restart
+
+```console
+sudo systemctl restart nginx
+```
