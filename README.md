@@ -55,11 +55,11 @@ Akan ada 2 file yang jadi:
 - ~/.ssh/id_rsa.pub: Public key. Bisa di share.
 
 #### C.2. Transfer public key dari local
-**Dengan SSH Copy ID**
+**C.2.1. Dengan SSH Copy ID**
 ```console
 ssh-copy-id username@remote_host
 ```
-**Dengan Manual**
+**C.2.2. Dengan Manual**
 ```console
 cat ~/.ssh/id_rsa.pub
 ```
