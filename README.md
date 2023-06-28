@@ -53,3 +53,29 @@ ssh-keygen
 Akan ada 2 file yang jadi:
 - ~/.ssh/id_rsa: Private key. Jangan share ini.
 - ~/.ssh/id_rsa.pub: Public key. Bisa di share.
+
+#### Transfer public key dari local
+**Dengan SSH Copy ID**
+```console
+ssh-copy-id username@remote_host
+```
+**Dengan Manual**
+```console
+cat ~/.ssh/id_rsa.pub
+```
+Copy value nya.
+Masuk ke server lagi.
+Buat folder SSH
+```console
+mkdir -p ~/.ssh
+```
+Terus masukkan public key yang dicopy tadi
+```console
+echo isi_public_key >> ~/.ssh/authorized_keys
+```
+
+#### Coba login dengan ssh
+```console
+ssh username@remote_host
+```
+
