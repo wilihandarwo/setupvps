@@ -98,7 +98,7 @@ echo isi_public_key >> ~/.ssh/authorized_keys
 #### C.3. Coba login dengan SSH
 
 ```console
-ssh username@remote_host
+ssh fadli@remote_host
 ```
 
 ## Langkah 6 - Non-aktifkan Password
@@ -279,6 +279,12 @@ Start at boot server:
 sudo systemctl enable nginx
 ```
 
+## Langkah 5 - Install PHP
+
+```console
+sudo apt install php8.2-fpm
+```
+
 ## Langkah 5 - Setup server block
 
 Multiple domain di /var/www/
@@ -286,39 +292,20 @@ Multiple domain di /var/www/
 Buat directory
 
 ```console
-sudo mkdir -p /var/www/your_domain/html
+sudo mkdir -p /var/www/your_domain
 ```
 
 Kasih ownership access ke
 $USER environtment variable
 
 ```console
-sudo chown -R $USER:$USER /var/www/your_domain/html
+sudo chown -R $USER:$USER /var/www/your_domain
 ```
 
 permission
 
 ```console
 sudo chmod -R 755 /var/www/your_domain
-```
-
-buat index html
-
-```console
-nano /var/www/your_domain/html/index.html
-```
-
-copy basic html
-
-```bash
-<html>
-    <head>
-        <title>Welcome to your_domain!</title>
-    </head>
-    <body>
-        <h1>Success!  The your_domain server block is working!</h1>
-    </body>
-</html>
 ```
 
 setup configuration block
@@ -331,17 +318,25 @@ configuration
 
 ```bash
 server {
-        listen 80;
-        listen [::]:80;
+    listen 80;
+    server_name your_domain www.your_domain;
+    root /var/www/your_domain;
 
-        root /var/www/your_domain/html;
-        index index.html index.htm index.nginx-debian.html;
+    index index.html index.htm index.php;
 
-        server_name your_domain www.your_domain;
+    location / {
+        try_files $uri $uri/ =404;
+    }
 
-        location / {
-                try_files $uri $uri/ =404;
-        }
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
 }
 ```
 
@@ -349,6 +344,12 @@ site enable
 
 ```console
 sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+```
+
+unlink
+
+```console
+sudo unlink /etc/nginx/sites-enabled/default
 ```
 
 prevent memory bucket problem
