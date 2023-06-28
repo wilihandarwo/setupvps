@@ -90,3 +90,16 @@ Host remote_alias
     HostName remote_host
     Port port_num
 ```
+
+## Langkah 6 - Non-aktifkan Password
+```console
+sudo nano /etc/ssh/sshd_config
+```
+Cari baris PasswordAuthentication, comment nya dihapus, biar aktif
+```bash
+PasswordAuthentication no
+```
+Restart
+```console
+sudo service ssh restart
+```
