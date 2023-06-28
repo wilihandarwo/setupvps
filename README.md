@@ -50,3 +50,6 @@ rsync --archive --chown=fadli:fadli ~/.ssh /home/fadli
 ```console
 ssh-keygen
 ```
+Akan ada 2 file yang jadi:
+- ~/.ssh/id_rsa: Private key. Jangan share ini.
+- ~/.ssh/id_rsa.pub: Public key. Bisa di share.
