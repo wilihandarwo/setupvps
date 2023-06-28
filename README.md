@@ -201,3 +201,6 @@ Start at boot server:
 ```console
 sudo systemctl enable nginx
 ```
+## Langkah 5 - Setup server block
+Multiple domain di /var/www/
+
