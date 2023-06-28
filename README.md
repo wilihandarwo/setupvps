@@ -79,18 +79,6 @@ echo isi_public_key >> ~/.ssh/authorized_keys
 ssh username@remote_host
 ```
 
-#### C.4. Login ke SSH tanpa ngetik IP berulang kali
-Di local
-```console
-nano ~/.ssh/config
-```
-Trus buat config nya
-```bash
-Host remote_alias
-    HostName remote_host
-    Port port_num
-```
-
 ## Langkah 6 - Non-aktifkan Password
 ```console
 sudo nano /etc/ssh/sshd_config
@@ -103,3 +91,63 @@ Restart
 ```console
 sudo service ssh restart
 ```
+## Langkah 7 - Ganti port SSH
+```console
+sudo nano /etc/ssh/sshd_config
+```
+Cari port 22 trus edit
+```bash
+#Port 22
+Port 4444
+```
+Restart
+```console
+sudo service ssh restart
+```
+
+#### Langkah 8 - Login ke SSH tanpa ngetik IP berulang kali
+Di local
+```console
+nano ~/.ssh/config
+```
+Trus buat config nya
+```bash
+Host testhost
+    HostName your_domain
+    Port 4444
+    User demo
+```
+## Langkah 9 - Limit user yang bisa connect ke SSH
+```console
+sudo nano /etc/ssh/sshd_config
+```
+Cari dan edit
+```bash
+AllowUsers user1 user2
+```
+Restart
+```console
+sudo service ssh restart
+```
+## Langkah 10 - Nonaktifkan login dengan root
+```console
+sudo nano /etc/ssh/sshd_config
+```
+Cari dan edit
+```bash
+PermitRootLogin no
+```
+Restart
+```console
+sudo service ssh restart
+```
+## Langkah 11 - Jaga koneksi terus hidup
+```console
+nano ~/.ssh/config
+```
+cari dan edit
+```bash
+Host *
+    ServerAliveInterval 120
+```
+
