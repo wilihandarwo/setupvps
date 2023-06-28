@@ -1,4 +1,4 @@
-# Setup VPS
+# Initial Setup VPS
 
 ## Langkah 1 - Login sebagai root
 ```console
@@ -151,3 +151,53 @@ Host *
     ServerAliveInterval 120
 ```
 
+# Install Nginx Ubuntu 22.04
+## Langkah 1 - Install Nginx
+```console
+sudo apt update
+sudo apt install nginx
+```
+## Langkah 2 - Atur ulang firewall
+```console
+sudo ufw app list
+```
+```console
+sudo ufw allow 'Nginx HTTP'
+```
+verifiy
+```console
+sudo ufw status
+```
+## Langkah 3 - Cek web server
+```console
+systemctl status nginx
+```
+Buka ip address nya, kalau ga tau silahkan ketik di server:
+```console
+curl -4 icanhazip.com
+```
+## Langkah 4 - Command untuk Nginx
+Stop web server:
+```console
+sudo systemctl stop nginx
+```
+Start web server:
+```console
+sudo systemctl start nginx
+```
+Stop and start web server:
+```console
+sudo systemctl restart nginx
+```
+Configuration changes and reload web server:
+```console
+sudo systemctl reload nginx
+```
+Disable startu automaticaly the server:
+```console
+sudo systemctl disable nginx
+```
+Start at boot server:
+```console
+sudo systemctl enable nginx
+```
