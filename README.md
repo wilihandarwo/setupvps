@@ -74,8 +74,19 @@ Terus masukkan public key yang dicopy tadi
 echo isi_public_key >> ~/.ssh/authorized_keys
 ```
 
-#### C.3. Coba login dengan ssh
+#### C.3. Coba login dengan SSH
 ```console
 ssh username@remote_host
 ```
 
+#### C.4. Login ke SSH tanpa ngetik IP berulang kali
+Di local
+```console
+nano ~/.ssh/config
+```
+Trus buat config nya
+```bash
+Host remote_alias
+    HostName remote_host
+    Port port_num
+```
