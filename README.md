@@ -35,18 +35,18 @@ ufw status
 ```
 
 ## Langkah 5 - Aktifkan Akses Eksternal untuk Reguler User
-### Jika punya password
+### A. Jika punya password
 ```console
 ssh fadli@your_server_ip
 ```
 
-### Jika root sudah menggunakan SSH
+### B. Jika root sudah menggunakan SSH
 ```console
 rsync --archive --chown=fadli:fadli ~/.ssh /home/fadli
 ```
 
-### Jika belum setup SSH
-#### Generate SSH di lokal
+### C. Jika belum setup SSH
+#### C.1. Generate SSH di lokal
 ```console
 ssh-keygen
 ```
@@ -54,7 +54,7 @@ Akan ada 2 file yang jadi:
 - ~/.ssh/id_rsa: Private key. Jangan share ini.
 - ~/.ssh/id_rsa.pub: Public key. Bisa di share.
 
-#### Transfer public key dari local
+#### C.2. Transfer public key dari local
 **Dengan SSH Copy ID**
 ```console
 ssh-copy-id username@remote_host
@@ -74,7 +74,7 @@ Terus masukkan public key yang dicopy tadi
 echo isi_public_key >> ~/.ssh/authorized_keys
 ```
 
-#### Coba login dengan ssh
+#### C.3. Coba login dengan ssh
 ```console
 ssh username@remote_host
 ```
