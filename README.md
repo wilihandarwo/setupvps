@@ -15,3 +15,38 @@ adduser fadli
 ```console
 usermod -aG sudo fadli
 ```
+
+## Langkah 4 - Setting Firewall
+Cek dulu setting yang ada:
+```console
+ufw app list
+```
+
+```console
+ufw allow OpenSSH
+```
+
+```console
+ufw enable
+```
+
+```console
+ufw status
+```
+
+## Langkah 5 - Aktifkan Akses Eksternal untuk Reguler User
+### Jika punya password
+```console
+ssh fadli@your_server_ip
+```
+
+### Jika root sudah menggunakan SSH
+```console
+rsync --archive --chown=fadli:fadli ~/.ssh /home/fadli
+```
+
+### Jika belum setup SSH
+#### Generate SSH di lokal
+```console
+ssh-keygen
+```
