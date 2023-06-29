@@ -6,6 +6,13 @@
 ssh root@your_server_ip
 ```
 
+Update
+
+```console
+sudo apt-get update
+sudo apt-get upgrade -y
+```
+
 ## Langkah 2 - Buat user baru
 
 Kedepannya kita ga akan pernah login lagi sebagai root, tapi dengan user baru ini
@@ -95,6 +102,13 @@ Terus masukkan public key yang dicopy tadi
 echo isi_public_key >> ~/.ssh/authorized_keys
 ```
 
+#### C.3. Secure folder SSH
+
+```console
+sudo chmod 700 ~/.ssh
+sudo chmod 600 ~/.ssh/authorized_keys
+```
+
 #### C.3. Coba login dengan SSH
 
 ```console
@@ -119,23 +133,10 @@ Restart
 sudo service ssh restart
 ```
 
-## Langkah 7 - Ganti port SSH
+atau
 
 ```console
-sudo nano /etc/ssh/sshd_config
-```
-
-Cari port 22 trus edit
-
-```bash
-#Port 22
-Port 4444
-```
-
-Restart
-
-```console
-sudo service ssh restart
+sudo systemctl restart ssh
 ```
 
 #### Langkah 8 - Login ke SSH tanpa ngetik IP berulang kali
@@ -151,7 +152,6 @@ Trus buat config nya
 ```bash
 Host testhost
     HostName your_domain
-    Port 4444
     User demo
 ```
 
@@ -211,6 +211,13 @@ Host *
 ```console
 sudo apt update
 sudo apt install nginx
+```
+
+Enable Nginx
+
+```console
+sudo systemctl start nginx
+sudo systemctl enable nginx
 ```
 
 ## Langkah 2 - Atur ulang firewall
@@ -282,7 +289,19 @@ sudo systemctl enable nginx
 ## Langkah 5 - Install PHP
 
 ```console
-sudo apt install php8.2-fpm
+sudo apt install php8.2-fpm php8.2-sqlite3
+```
+
+verify
+
+```console
+php -v
+```
+
+Cek Sqlite
+
+```console
+sqlite3 --version
 ```
 
 ## Langkah 5 - Setup server block
@@ -330,7 +349,7 @@ server {
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
      }
 
     location ~ /\.ht {
@@ -424,6 +443,97 @@ sudo certbot --nginx -d example.com -d www.example.com
 ```
 
 ## Langkah 4 - Verifikasi
+
+```console
+sudo systemctl status snap.certbot.renew.service
+```
+
+dryrun
+
+```console
+sudo certbot renew --dry-run
+```
+
+# Add New Website
+
+## Persiapan di Server
+
+Buat folder di /var/www/
+
+```console
+sudo mkdir -p /var/www/your_domain
+```
+
+Kasih ownership access ke
+$USER environtment variable
+
+```console
+sudo chown -R $USER:$USER /var/www/your_domain
+```
+
+permission
+
+```console
+sudo chmod -R 755 /var/www/your_domain
+```
+
+setup configuration block
+
+```console
+sudo nano /etc/nginx/sites-available/your_domain
+```
+
+configuration
+
+```bash
+server {
+    listen 80;
+    server_name your_domain www.your_domain;
+    root /var/www/your_domain;
+
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+}
+```
+
+site enable
+
+```console
+sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+```
+
+Cek syntax error di config nginx
+
+```console
+sudo nginx -t
+```
+
+kalau aman restart
+
+```console
+sudo systemctl restart nginx
+```
+
+## Arahkan domain ke IP
+
+## Install Certbot
+
+```console
+sudo certbot --nginx -d example.com -d www.example.com
+```
 
 ```console
 sudo systemctl status snap.certbot.renew.service
