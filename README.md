@@ -102,7 +102,7 @@ Terus masukkan public key yang dicopy tadi
 echo isi_public_key >> ~/.ssh/authorized_keys
 ```
 
-#### C.3. Secure folder SSH
+#### C.3. Secure folder SSH (ga usah dulu)
 
 ```console
 sudo chmod 700 ~/.ssh
@@ -289,7 +289,7 @@ sudo systemctl enable nginx
 ## Langkah 5 - Install PHP
 
 ```console
-sudo apt install php8.2-fpm php8.2-sqlite3
+sudo apt install php8.1-fpm php8.1-sqlite3
 ```
 
 verify
@@ -407,6 +407,14 @@ sudo systemctl restart nginx
 
 ```console
 sudo snap install core; sudo snap refresh core
+```
+
+old
+
+```console
+sudo apt remove certbot
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
 ```
 
 link certbot command
@@ -543,4 +551,103 @@ dryrun
 
 ```console
 sudo certbot renew --dry-run
+```
+
+# Auto Git Pull using GitHub Webhook
+
+## Cek Git version
+
+```console
+git --version
+```
+
+Set Name on Git
+
+```console
+git config --global user.name "Fadli Wilihandarwo"
+```
+
+```console
+git config --global user.email "fadli@wilihandarwo.com"
+```
+
+```console
+git config --global init.defaultBranch main
+```
+
+## SSH Key to Github
+
+```console
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+```console
+eval "$(ssh-agent -s)"
+```
+
+```console
+ssh-add ~/.ssh/id_ed25519
+```
+
+```console
+cat ~/.ssh/id_ed25519.pub
+```
+
+Add key to SSH Key on Github
+
+## CLone Git
+
+Go to the directory, and don't forget add dot . at the end to copy to current folder
+
+```console
+git clone https://github.com/username/repo.git .
+```
+
+## Create PHP Webhook File
+
+Copy deployer.php
+
+```console
+nano deployer.php
+```
+
+create per site setting php
+
+```console
+nano contohwebsite.php
+```
+
+create log file
+
+```console
+nano contohwebsite.log
+```
+
+## Set folder permission
+
+```console
+sudo chown -R www-data:www-data /var/www/contohwebsite.com
+sudo chmod -R 750 /var/www/contohwebsite.com
+
+sudo chown -R www-data:www-data /var/www/setupvps.com/deploy/contohwebsite.php
+sudo chown -R www-data:www-data /var/www/setupvps.com/deploy/contohwebsite.log
+sudo chown -R www-data:www-data /var/www/setupvps.com/deploy/deployer.php
+
+sudo chmod -R 750 /var/www/setupvps.com/deploy/contohwebsite.php
+sudo chmod -R 750 /var/www/setupvps.com/deploy/contohwebsite.log
+sudo chmod -R 750 /var/www/setupvps.com/deploy/deployer.php
+```
+
+## Set SSH www-data ke Github
+
+```console
+sudo mkdir .ssh
+sudo chown -R www-data:www-data .ssh
+sudo -u www-data -s /bin/bash
+ssh-keygen -t ed25519 -C "fadli@wilihandarwo.com"
+cat /var/www/.ssh/id_ed25519.pub
+cd /var/www/contohwebsite.com/
+git status
+git pull
+
 ```

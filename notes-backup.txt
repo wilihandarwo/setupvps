@@ -1,0 +1,13 @@
+- Cek Git version
+- git config --global user.name "YOUR_USERNAME"
+- git config --global user.email "YOUR_EMAIL"
+- ssh-keygen -t rsa -b 4096 -C "YOUR_EMAIL"
+- cat ~/.ssh/id_rsa.pub
+
+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
+
+safaf
+
+
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7baBJ26OJXhuGnfviW3LloDWhSzfwxe0mNSKAX8tsq fadli@wilihandarwo.com
