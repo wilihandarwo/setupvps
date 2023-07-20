@@ -646,8 +646,162 @@ sudo chown -R www-data:www-data .ssh
 sudo -u www-data -s /bin/bash
 ssh-keygen -t ed25519 -C "fadli@wilihandarwo.com"
 cat /var/www/.ssh/id_ed25519.pub
+copy ke github ssh key setting
+
 cd /var/www/contohwebsite.com/
 git status
 git pull
 
 ```
+
+👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
+
+# New Website Include Auto Git Pull
+
+Buat folder di /var/www/
+
+```console
+sudo mkdir -p /var/www/your_domain
+```
+
+Kasih ownership access ke
+$USER environtment variable
+
+```console
+sudo chown -R $USER:$USER /var/www/your_domain
+```
+
+permission
+
+```console
+sudo chmod -R 750 /var/www/your_domain
+```
+
+setup configuration block
+
+```console
+sudo nano /etc/nginx/sites-available/your_domain
+```
+
+configuration
+
+```bash
+server {
+    listen 80;
+    server_name your_domain www.your_domain;
+    root /var/www/your_domain;
+
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+}
+```
+
+site enable
+
+```console
+sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+```
+
+Cek syntax error di config nginx
+
+```console
+sudo nginx -t
+```
+
+kalau aman restart
+
+```console
+sudo systemctl restart nginx
+```
+
+## Arahkan domain ke IP
+
+## Install Certbot
+
+```console
+sudo certbot --nginx -d example.com -d www.example.com
+```
+
+```console
+sudo systemctl status snap.certbot.renew.service
+```
+
+dryrun
+
+```console
+sudo certbot renew --dry-run
+```
+
+## CLone Git
+
+Go to the directory, and don't forget add dot . at the end to copy to current folder
+
+```console
+git clone git@github.com:wilihandarwo/solofounder.id.git .
+git status
+git add .
+git commit -m "test"
+git pull
+git config pull.rebase false
+git push
+```
+
+## Create PHP Webhook File
+
+go to folder /var/www/setupvps.com/deploy/
+create per site setting php
+
+```console
+nano contohwebsite.php
+```
+
+create log file
+
+```console
+nano contohwebsite.log
+```
+
+## Set folder permission
+
+```console
+sudo chown -R www-data:www-data /var/www/contohwebsite.com
+sudo chmod -R 750 /var/www/contohwebsite.com
+
+sudo chown -R www-data:www-data /var/www/setupvps.com/deploy/contohwebsite.php
+sudo chown -R www-data:www-data /var/www/setupvps.com/deploy/contohwebsite.log
+
+
+sudo chmod -R 750 /var/www/setupvps.com/deploy/contohwebsite.php
+sudo chmod -R 750 /var/www/setupvps.com/deploy/contohwebsite.log
+
+```
+
+## Set SSH www-data ke Github ??? Kayaknya ga perlu lagi
+
+```console
+
+sudo -u www-data -s /bin/bash
+
+cd /var/www/contohwebsite.com/
+git status
+git pull
+```
+
+## Set Webhook on GitHub
+
+Payload url: https://setupvps.com/deploy/iklanabadi.php
+Content Type: application/json
+Secret:
