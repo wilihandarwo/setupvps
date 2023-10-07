@@ -11,3 +11,26 @@ safaf
 
 
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA7baBJ26OJXhuGnfviW3LloDWhSzfwxe0mNSKAX8tsq fadli@wilihandarwo.com
+
+
+server {
+    listen 80;
+    server_name satumilyar.id www.satumilyar.id;
+    root /var/www/satumilyar.id;
+
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+}
